@@ -1,0 +1,27 @@
+version: "3"
+services:
+  webapp:
+    image: apache
+    deploy:
+      replicas: 3
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+    depends_on: 
+      - redis
+      - db
+
+  redis:
+    image: redis-server
+    ports: 
+      - "6379:6379"
+    volumes:
+      - "/home/docker/data:/data"
+    
+  db:
+    image: postgres    
